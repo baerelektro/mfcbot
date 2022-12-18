@@ -72,34 +72,24 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
         user = escape(lst[0])
         number = int(escape(lst[1]))
 
-    results = [
+    # Создаём список доступных к выбору валют
+    coinlist = ["MFC", "EVER", "USDT"]
 
-        InlineQueryResultArticle(
-            id=str(uuid4()),
-            title="MFC",
-            input_message_content=InputTextMessageContent(
-                f"Чек на {number} MFC для пользователя {user}", parse_mode=ParseMode.HTML
+    # Создаём список для выбора валют
+    results = []
+
+    for coin in coinlist:  
+        results.append(
+            InlineQueryResultArticle(
+                id=str(uuid4()),
+                title=coin,
+                input_message_content=InputTextMessageContent(
+                    f"Чек на {number} {coin} для пользователя {user}", parse_mode=ParseMode.HTML
+                ),
             ),
-        ),
+        )
 
-        InlineQueryResultArticle(
-            id=str(uuid4()),
-            title="EVER",
-            input_message_content=InputTextMessageContent(
-                f"Чек на {number} EVER для пользователя {user}", parse_mode=ParseMode.HTML
-            ),
-        ),
-
-        InlineQueryResultArticle(
-            id=str(uuid4()),
-            title="USDT",
-            input_message_content=InputTextMessageContent(
-                f"Чек на {number} USDT для пользователя {user}", parse_mode=ParseMode.HTML
-            ),
-
-        ),
-    ]
-
+    # Отсылаем список клиенту
     await update.inline_query.answer(results)
 
 
