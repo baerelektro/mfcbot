@@ -58,15 +58,16 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     """Handle the inline query. This is run when you type: @botusername <query>"""
-    query = update.inline_query.query
-
-    if query == "":
+    query = update.inline_query
+    
+    if query.query == "":
         return
 
-    lst = query.split()
+    lst = query.guery.split()
 
     user = ""
     number = ""
+    
 
     if len(lst) == 2:
         user = escape(lst[0])
@@ -84,7 +85,7 @@ async def inline_query(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
                 id=str(uuid4()),
                 title=coin,
                 input_message_content=InputTextMessageContent(
-                    f"Чек на {number} {coin} для пользователя {user}", parse_mode=ParseMode.HTML
+                    f"Пользователь {query.sender.from_user.usename} на {number} {coin} для пользователя {user}", parse_mode=ParseMode.HTML
                 ),
             ),
         )
